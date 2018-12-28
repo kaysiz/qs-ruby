@@ -1,0 +1,44 @@
+<h1>Ruby Quickstarts</h1>
+
+<p>This set of quickstart examples does not include authentication with DocuSign.
+Instead, you need to provide an access token from the DocuSign Developer Center.
+See the Installation steps for more information.</p>
+
+<h2>Recommended</h2>
+<p>We recommend that you check out the
+  <a href="https://github.com/docusign/eg-03-ruby-auth-code-grant">Ruby Authorization Code Grant example launcher.</a>
+  For using the OAuth JWT Grant flow, see the
+  <a href="https://github.com/docusign/eg-01-ruby-jwt">Ruby JWT code example.</a>
+</p>
+
+
+<h2>Installation</h2>
+<p>First, obtain an access token from the DocuSign DevCenter.</p>
+
+<p>Then update the quickstart controllers in the source directory <b>app/controllers</b>
+with your access token, email address, etc.</p>
+<ul>
+  <li>embedded_signing_controller.rb</li>
+  <li>list_envelopes_controller.rb</li>
+  <li>send_envelope_controller.rb</li>
+</ul>
+
+Then run:
+<code><pre>
+  cd ruby-qs
+  bundler install
+  rails s
+</pre></code>
+
+<h2>Usage</h2>
+
+<p>This quickstart includes three workflow examples:</p>
+
+<ul>
+  <li><%= link_to('Embedded signing', controller: 'embedded_signing',
+                  action: 'index') %></li>
+  <li><%= link_to('Send envelope', controller: 'send_envelope',
+                  action: 'index') %></li>
+  <li><%= link_to('List envelopes', controller: 'list_envelopes',
+                  action: 'index') %></li>
+</ul>
