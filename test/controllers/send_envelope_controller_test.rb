@@ -6,4 +6,9 @@ class SendEnvelopeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get create" do
+    get send_envelope_create_url
+    assert_response :success
+  end
+
 end

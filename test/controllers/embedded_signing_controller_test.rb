@@ -6,4 +6,9 @@ class EmbeddedSigningControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get create" do
+    get embedded_signing_create_url
+    assert_response :success
+  end
+
 end

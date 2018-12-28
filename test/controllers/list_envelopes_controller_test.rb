@@ -6,4 +6,9 @@ class ListEnvelopesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get create" do
+    get list_envelopes_create_url
+    assert_response :success
+  end
+
 end
