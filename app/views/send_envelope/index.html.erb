@@ -1,2 +1,6 @@
-<h1>SendEnvelope#index</h1>
-<p>Find me in app/views/send_envelope/index.html.erb</p>
+<h1>Send envelope for signing via email</h1>
+
+<%= form_with method: :post, controller: 'send_envelope',
+              action: 'create', local: true do |form| %>
+  <%= form.submit "Send the envelope"%>
+<% end %>

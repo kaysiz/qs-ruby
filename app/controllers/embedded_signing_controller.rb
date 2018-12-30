@@ -57,14 +57,6 @@ class EmbeddedSigningController < ApplicationController
         :email => signer_email, :name => signer_name,
         :clientUserId => client_user_id,  :recipientId => 1
     })
-    # routingOrder (lower means earlier) determines the order of deliveries
-    # to the recipients. Parallel routing order is supported by using the
-    # same integer as the order for two or more recipients.
-
-    # The DocuSign platform searches throughout your envelope's
-    # documents for matching anchor strings. So the
-    # sign_here_2 tab will be used in both document 2 and 3 since they
-    # use the same anchor string for their "signer 1" tabs.
     sign_here = DocuSign_eSign::SignHere.new ({
         :documentId => '1', :pageNumber => '1',
         :recipientId => '1', :tabLabel => 'SignHereTab',
