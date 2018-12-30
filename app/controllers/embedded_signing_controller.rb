@@ -15,7 +15,7 @@ class EmbeddedSigningController < ApplicationController
   # Instead, the account id must be set.
   #
   # For a more production oriented example, see the
-  # Authorization code grant authentication example. It includes an express web app:
+  # Authorization code grant authentication example:
   #      https://github.com/docusign/eg-03-ruby-auth-code-grant
   def create
     # base_url is the url of this application. Eg http://localhost:3000
