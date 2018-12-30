@@ -1,6 +1,6 @@
 class EmbeddedSigningController < ApplicationController
   # This is a quick start example of embedding the signing ceremony within your website.
-  # Language: Node.js
+  # Language: Ruby with Ruby on Rails
   #
   # See the Readme and Setup files for more information.
   #
@@ -33,10 +33,6 @@ class EmbeddedSigningController < ApplicationController
     signer_name = '{USER_FULLNAME}'
     signer_email = '{USER_EMAIL}'
 
-
-
-
-
     base_path = 'http://demo.docusign.net/restapi'
     client_user_id = '123' # Used to indicate that the signer will use an embedded
     # Signing Ceremony. Represents the signer's userId within
@@ -49,17 +45,15 @@ class EmbeddedSigningController < ApplicationController
     envelope_definition = DocuSign_eSign::EnvelopeDefinition.new
     envelope_definition.email_subject = "Please sign this document sent via the Ruby SDK"
 
-    doc1 = DocuSign_eSign::Document.new
-    doc1.document_base64 = Base64.encode64(File.binread(File.join('data', file_name)))
-    doc1.name = "pdf"
-    doc1.file_extension = "Lorem Ipsum"
-    doc1.document_id = "1"
+    doc = DocuSign_eSign::Document.new({
+      :documentBase64 => Base64.encode64(File.binread(File.join('data', file_name))),
+      :name => "Lorem Ipsum", :fileExtension => "pdf", :documentId => "1"})
 
     # The order in the docs array determines the order in the envelope
-    envelope_definition.documents = [doc1]
+    envelope_definition.documents = [doc]
     # create a signer recipient to sign the document, identified by name and email
     # We're setting the parameters via the object creation
-    signer1 = DocuSign_eSign::Signer.new ({
+    signer = DocuSign_eSign::Signer.new ({
         :email => signer_email, :name => signer_name,
         :clientUserId => client_user_id,  :recipientId => 1
     })
@@ -71,18 +65,17 @@ class EmbeddedSigningController < ApplicationController
     # documents for matching anchor strings. So the
     # sign_here_2 tab will be used in both document 2 and 3 since they
     # use the same anchor string for their "signer 1" tabs.
-    sign_here1 = DocuSign_eSign::SignHere.new
-    sign_here1.anchor_string = "/sn1/"
-    sign_here1.anchor_units = "pixels"
-    sign_here1.anchor_x_offset = "20"
-    sign_here1.anchor_y_offset = "10"
+    sign_here = DocuSign_eSign::SignHere.new ({
+        :documentId => '1', :pageNumber => '1',
+        :recipientId => '1', :tabLabel => 'SignHereTab',
+        :xPosition => '195', :yPosition => '147'
+    })
+
     # Tabs are set per recipient / signer
-    tabs = DocuSign_eSign::Tabs.new
-    tabs.sign_here_tabs = [sign_here1]
-    signer1.tabs = tabs
+    tabs = DocuSign_eSign::Tabs.new({:signHereTabs => [sign_here]})
+    signer.tabs = tabs
     # Add the recipients to the envelope object
-    recipients = DocuSign_eSign::Recipients.new
-    recipients.signers = [signer1]
+    recipients = DocuSign_eSign::Recipients.new({:signers => [signer]})
 
     envelope_definition.recipients = recipients
     # Request that the envelope be sent by setting |status| to "sent".
@@ -123,6 +116,10 @@ class EmbeddedSigningController < ApplicationController
     # State can be stored/recovered using the framework's session or a
     # query parameter on the returnUrl (see the makeRecipientViewRequest method)
     redirect_to results.url
+
+  rescue DocuSign_eSign::ApiError => e
+    @error_msg = e.response_body
+    render "welcome/error_return"
   end
 
   def index
